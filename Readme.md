@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Илья Поляков](https://up.htmlacademy.ru/javascript-individual/2/user/2531813).
-* Наставник: `Неизвестно`.
+- Студент: [Илья Поляков](https://up.htmlacademy.ru/javascript-individual/2/user/2531813).
+- Наставник: `Виктория Никитина`.
 
 ---
 
