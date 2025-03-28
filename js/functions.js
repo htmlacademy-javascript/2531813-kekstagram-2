@@ -1,6 +1,8 @@
 const isPalindrome = (string) => {
 
+
   string = string.replaceAll(' ', '').toLowerCase();
+
 
   let reversedString = '';
 
@@ -13,6 +15,6 @@ const isPalindrome = (string) => {
   return string === reversedString;
 };
 
+isPalindrome('racecar');
+isPalindrome ('hello');
 
-console.log(isPalindrome("racecar"));
-console.log(isPalindrome("hello"));
