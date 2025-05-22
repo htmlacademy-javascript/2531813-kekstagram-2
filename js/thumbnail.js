@@ -1,8 +1,16 @@
 const template = document.querySelector('#picture').content.querySelector('.picture');
+const container = document.querySelector('.pictures');
+
+const clear = () => {
+document.querySelectorAll('.picture').forEach((card)=>{
+card.remove()
+});
+
+}
 
 export const render = (pictures) => {
-  const container = document.querySelector('.pictures');
-  container.innerHTML = '';
+
+
 
   pictures.forEach((photo) => {
     const clone = template.cloneNode(true);
@@ -12,8 +20,8 @@ export const render = (pictures) => {
 
     img.src = photo.url;
     img.alt = photo.description;
-    likes.textContent = `${photo.likes} лайков`;
-    comments.textContent = `${photo.comments.length} комментариев`;
+    likes.textContent = photo.likes;
+    comments.textContent = photo.comments.length;
 
     container.appendChild(clone);
   });
