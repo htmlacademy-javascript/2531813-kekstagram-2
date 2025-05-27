@@ -1,5 +1,5 @@
 const template = document.querySelector('#picture').content.querySelector('.picture');
-const container = document.querySelector('.pictures');
+export const container = document.querySelector('.pictures');
 
 const clear = () => {
 document.querySelectorAll('.picture').forEach((card)=>{
