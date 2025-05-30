@@ -6,76 +6,57 @@ const commentsTotalCount = bigPicture.querySelector('.social__comment-total-coun
 const commentsList = bigPicture.querySelector('.social__comments');
 const caption = bigPicture.querySelector('.social__caption');
 const closeButton = bigPicture.querySelector('.big-picture__cancel');
+const commentTemplate = bigPicture.querySelector('.social__comment');
 
-// Функция для открытия окна с данными фотографии
-function openBigPicture(photoData) {
-  // Заполняем изображение
+const openBigPicture = (photoData) => {
   bigPictureImg.src = photoData.url;
   bigPictureImg.alt = photoData.description || '';
 
-  // Лайки
   likesCount.textContent = photoData.likes;
 
-  // Общее количество комментариев
   commentsTotalCount.textContent = photoData.comments.length;
 
-  // Показываем комментарии (можно реализовать постранично)
   commentsList.innerHTML = '';
   photoData.comments.forEach((comment) => {
-    const li = document.createElement('li');
-    li.className = 'social__comment';
-
-    const img = document.createElement('img');
-    img.className = 'social__picture';
+    const li = commentTemplate.cloneNode(true);
+    const img = li.querySelector('.social__picture');
     img.src = comment.avatar;
     img.alt = comment.name;
-    img.width = 35;
-    img.height = 35;
-
-    const p = document.createElement('p');
-    p.className = 'social__text';
-    p.textContent = comment.message;
-
-    li.appendChild(img);
-    li.appendChild(p);
+    li.querySelector('.social__text').textContent = comment.message;
     commentsList.appendChild(li);
   });
 
-  // Количество показанных комментариев (можно сделать динамически)
   commentsShownCount.textContent = photoData.comments.length;
 
-  // Описание
   caption.textContent = photoData.description || '';
 
-  // Показываем окно
   bigPicture.classList.remove('hidden');
 
-  // Удаляем класс с body, чтобы не было прокрутки (если нужно)
   document.body.classList.add('modal-open');
 
-  // Обработчик закрытия по Esc
   document.addEventListener('keydown', onEscPress);
-}
+};
 
-// Функция для закрытия окна
-function closeBigPicture() {
+const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onEscPress);
-}
+};
 
-// Обработчик Esc
-function onEscPress(evt) {
+const onEscPress = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
     closeBigPicture();
   }
-}
+};
 
-// Обработчик клика по кнопке закрытия
 closeButton.addEventListener('click', () => {
   closeBigPicture();
 });
 
-// Экспортируем функцию для использования при клике на миниатюру
 export { openBigPicture };
+
+const commentCountBlock = document.querySelector('.social__comment-count');
+const loadMoreButton = document.querySelector('.comments-loader');
+
+
