@@ -1,4 +1,6 @@
 
+export const COMMENTS_STEP = 5;
+
 export const PHOTOS_COUNT = 25;
 
 export const MIN_LIKES = 15;

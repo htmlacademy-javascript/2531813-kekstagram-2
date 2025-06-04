@@ -1,3 +1,5 @@
+import { COMMENTS_STEP } from "./constants.js";
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
@@ -6,76 +8,76 @@ const commentsTotalCount = bigPicture.querySelector('.social__comment-total-coun
 const commentsList = bigPicture.querySelector('.social__comments');
 const caption = bigPicture.querySelector('.social__caption');
 const closeButton = bigPicture.querySelector('.big-picture__cancel');
+const commentTemplate = bigPicture.querySelector('.social__comment');
+const commentCountBlock = document.querySelector('.social__comment-shown-count');
+const loadMoreButton = document.querySelector('.comments-loader');
 
-// Функция для открытия окна с данными фотографии
-function openBigPicture(photoData) {
-  // Заполняем изображение
-  bigPictureImg.src = photoData.url;
-  bigPictureImg.alt = photoData.description || '';
+let localComments;
+let renderedComments = 0;
 
-  // Лайки
-  likesCount.textContent = photoData.likes;
+const renderStatistic = () => {
+  commentCountBlock.textContent = renderedComments
+};
+const renderLoader = () => {
+  if (localComments.length) {
+    loadMoreButton.classList.remove('hidden');
+  } else {
+    loadMoreButton.classList.add('hidden');
+  }
+};
 
-  // Общее количество комментариев
-  commentsTotalCount.textContent = photoData.comments.length;
-
-  // Показываем комментарии (можно реализовать постранично)
-  commentsList.innerHTML = '';
-  photoData.comments.forEach((comment) => {
-    const li = document.createElement('li');
-    li.className = 'social__comment';
-
-    const img = document.createElement('img');
-    img.className = 'social__picture';
+const renderComments = () => {
+  localComments.splice(0, COMMENTS_STEP).forEach((comment) => {
+    const li = commentTemplate.cloneNode(true);
+    const img = li.querySelector('.social__picture');
     img.src = comment.avatar;
     img.alt = comment.name;
-    img.width = 35;
-    img.height = 35;
-
-    const p = document.createElement('p');
-    p.className = 'social__text';
-    p.textContent = comment.message;
-
-    li.appendChild(img);
-    li.appendChild(p);
+    li.querySelector('.social__text').textContent = comment.message;
     commentsList.appendChild(li);
+    renderedComments++;
   });
+  renderStatistic();
+  renderLoader();
+};
 
-  // Количество показанных комментариев (можно сделать динамически)
-  commentsShownCount.textContent = photoData.comments.length;
-
-  // Описание
+const openBigPicture = (photoData) => {
+  bigPictureImg.src = photoData.url;
+  bigPictureImg.alt = photoData.description || '';
+  likesCount.textContent = photoData.likes;
+  commentsTotalCount.textContent = photoData.comments.length;
+  commentsList.innerHTML = '';
   caption.textContent = photoData.description || '';
-
-  // Показываем окно
+  localComments = [...photoData.comments];
+  renderedComments = 0;
+  renderComments();
   bigPicture.classList.remove('hidden');
-
-  // Удаляем класс с body, чтобы не было прокрутки (если нужно)
   document.body.classList.add('modal-open');
 
-  // Обработчик закрытия по Esc
   document.addEventListener('keydown', onEscPress);
-}
+};
 
-// Функция для закрытия окна
-function closeBigPicture() {
+const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onEscPress);
-}
+};
 
-// Обработчик Esc
-function onEscPress(evt) {
+const onEscPress = (evt) => {
   if (evt.key === 'Escape' || evt.key === 'Esc') {
     closeBigPicture();
   }
-}
+};
 
-// Обработчик клика по кнопке закрытия
 closeButton.addEventListener('click', () => {
   closeBigPicture();
 });
 
-// Экспортируем функцию для использования при клике на миниатюру
+loadMoreButton.addEventListener('click', () => {
+  renderComments();
+});
+
 export { openBigPicture };
+
+
+

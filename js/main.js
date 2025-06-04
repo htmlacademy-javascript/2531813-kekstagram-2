@@ -6,15 +6,3 @@ const photosData = getPhotos();
 console.log(photosData);
 
 render(photosData);
-
-
-container.addEventListener('click', (evt) => {
-  const thumbnailElement = evt.target.closest('.picture');
-  if (!thumbnailElement) return;
-
-  const index = Array.from(container.children).indexOf(thumbnailElement);
-  if (index === -1) return;
-
-  const photoData = photosData[index];
-  openBigPicture(photoData);
-});
